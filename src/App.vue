@@ -1,11 +1,16 @@
 <template>
-  <h1>Hello!</h1>
+  <HeaderComp />
   <router-view></router-view>
 </template>
 
 <script>
+import HeaderComp from "./components/sections/HeaderComp.vue";
+
 export default {
   name: "App",
+  components: {
+    HeaderComp,
+  },
 };
 </script>
 
