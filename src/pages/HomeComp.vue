@@ -13,6 +13,9 @@
           more recently with desktop publishing software like Aldus PageMaker
           including versions of Lorem Ipsum.
         </p>
+        <router-link class="btn btn-dark" :to="{ name: 'users' }"
+          >Users</router-link
+        >
       </div>
     </div>
   </div>
