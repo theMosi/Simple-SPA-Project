@@ -1,6 +1,6 @@
 <template>
   <div class="container col-md-6 mt-5">
-    <h2>Create Post :</h2>
+    <h2>Edit Post :</h2>
 
     <form @submit.prevent="validate">
       <div class="mb-3">
@@ -32,7 +32,7 @@
           class="spinner-border spinner-border-sm"
           role="status"
         ></div>
-        Create Post
+        Edit Post
       </button>
     </form>
   </div>
@@ -42,6 +42,7 @@
 import { reactive, ref } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useRoute } from "vue-router";
 
 export default {
   setup() {
@@ -53,6 +54,21 @@ export default {
     });
 
     const loading = ref(false);
+    const route = useRoute();
+
+    function getPost() {
+      axios
+        .get(`https://jsonplaceholder.typicode.com/posts/${route.params.id}`)
+        .then(function (response) {
+          form.title = response.data.title;
+          form.body = response.data.body;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+
+    getPost();
 
     const validate = () => {
       if (form.title === "") {
@@ -68,13 +84,14 @@ export default {
 
       if (form.title !== "" && form.body !== "") {
         loading.value = true;
-        createPost();
+        editPost();
       }
     };
 
-    const createPost = () => {
+    const editPost = () => {
       axios
-        .post(`https://jsonplaceholder.typicode.com/posts`, {
+        .put(`https://jsonplaceholder.typicode.com/posts/${route.params.id}`, {
+          id: route.params.id,
           title: form.title,
           body: form.body,
           userId: 1,
@@ -84,7 +101,7 @@ export default {
 
           Swal.fire({
             title: "Thanks!",
-            text: "Post Created",
+            text: "Post Updated",
             icon: "success",
             confirmButtonText: "ok",
           });
