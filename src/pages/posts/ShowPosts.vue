@@ -1,24 +1,21 @@
 <template>
   <div class="container mt-5">
-    <div>
-      <router-link class="btn btn-dark" :to="{ name: 'createPost' }"
-        >Create Post</router-link
-      >
-    </div>
     <div class="row g-3">
       <div v-if="loading" class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
-      <div v-else class="col-md-6" v-for="post in posts" :key="post.id">
+      <div v-else class="col-md-6">
         <div class="card">
           <div class="card-header">
-            <router-link :to="{ name: 'postId', params: { id: post.id } }">{{
-              post.title
-            }}</router-link>
+            {{ post.title }}
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item">Body: {{ post.body }}</li>
           </ul>
+          <div class="card-footer">
+            <button class="btn btn-sm btn-danger me-4">Delete</button>
+            <button class="btn btn-sm btn-dark">Edit</button>
+          </div>
         </div>
       </div>
     </div>
@@ -30,17 +27,19 @@
 <script>
 import axios from "axios";
 import { ref } from "vue";
+import { useRoute } from "vue-router";
 
 export default {
   setup() {
-    const posts = ref([]);
+    const post = ref({});
     const loading = ref(true);
+    const route = useRoute();
 
-    function getPosts() {
+    function getPost() {
       axios
-        .get("https://jsonplaceholder.typicode.com/posts")
+        .get(`https://jsonplaceholder.typicode.com/posts/${route.params.id}`)
         .then(function (response) {
-          posts.value = response.data;
+          post.value = response.data;
           loading.value = false;
         })
         .catch(function (error) {
@@ -48,9 +47,9 @@ export default {
         });
     }
 
-    getPosts();
+    getPost();
 
-    return { posts, loading };
+    return { post, loading };
   },
 };
 </script>
