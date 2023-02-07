@@ -1,15 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeComp from './pages/HomeComp.vue'
 import IndexUsers from './pages/users/UsersComp.vue'
-import TemplateUsers from './pages/users/TemplateComp.vue'
-import ShowUser from './pages/users/ShowUser.vue'
+import TemplateUser from './pages/users/TemplateComp.vue'
+import ShowUsers from './pages/users/ShowUser.vue'
+
+import IndexPost from './pages/posts/PostsComp.vue'
+import TemplatePost from './pages/posts/PostTemplateComp.vue'
 
 const routes = [
     { path: "/", name: "home", component: HomeComp },
     {
-        path: "/users", name: "users", component: TemplateUsers, children: [
+        path: "/users", name: "userTemplate", component: TemplateUser, children: [
             { path: "", name: "users", component: IndexUsers },
-            { path: ":id", name: "userId", component: ShowUser }
+            { path: ":id", name: "userId", component: ShowUsers }
+        ]
+    },
+    {
+        path: "/posts", name: "postTemplate", component: TemplatePost, children: [
+            { path: "", name: "posts", component: IndexPost },
+            // { path: ":id", name: "postId", component: ShowPost }
         ]
     }
 ];
